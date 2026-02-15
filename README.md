@@ -18,66 +18,55 @@ Window functions enable calculations across sets of rows related to the current 
 
 Example: Ranking job seekers by number of applications,
 
-SELECT seeker_id,
-   
-   COUNT(application_id) AS total_applications,
-    
-   RANK() OVER (ORDER BY COUNT(application_id) DESC) AS rank_position
-   
-   FROM applications
-   
-   GROUP BY seeker_id;
+    SELECT seeker_id,
+    COUNT(application_id) AS total_applications,    
+    RANK() OVER (ORDER BY COUNT(application_id) DESC) AS rank_position
+    FROM applications
+    GROUP BY seeker_id;
 
 This query counts applications per job seeker and assigns a rank based on activity. It helps identify the most active candidates.
 
 2. Subqueries
 Subqueries allow us to nest queries inside others, enabling filtering or calculations that depend on intermediate results.
+
 Example: Find job seekers who applied to jobs in the “IT” industry
 
-SELECT name, email
+    SELECT name, email
+    FROM job_seekers
+    WHERE seeker_id IN (
+    SELECT seeker_id
+    FROM applications a
+    JOIN jobs j ON a.job_id = j.job_id
+    JOIN companies c ON j.company_id = c.company_id
+    WHERE c.industry = 'IT');
 
-FROM job_seekers
-
-WHERE seeker_id IN (
-
-SELECT seeker_id
-    
-FROM applications a
-    
-JOIN jobs j ON a.job_id = j.job_id
-    
-JOIN companies c ON j.company_id = c.company_id
-    
-WHERE c.industry = 'IT');
-
-
 Here, the inner query identifies seekers who applied to IT jobs, and the outer query retrieves their details.
 
 3. Common Table Expressions (CTEs)
 CTEs provide a way to structure complex queries into readable, reusable blocks. They are especially useful for multi‑step analysis.
+
 Example: Calculate application conversion rates
 
-WITH total_applications AS (
-    SELECT seeker_id, COUNT(*) AS applied_count
-    FROM applications
-    GROUP BY seeker_id
-),
-successful_applications AS (
-    SELECT seeker_id, COUNT(*) AS success_count
-    FROM applications
-    WHERE status = 'Accepted'
-    GROUP BY seeker_id
-)
-SELECT 
-    t.seeker_id,
-    t.applied_count,
-    s.success_count,
-    (s.success_count * 100.0 / t.applied_count) AS conversion_rate
-FROM total_applications t
-LEFT JOIN successful_applications s
-ON t.seeker_id = s.seeker_id;
+    WITH total_applications AS (
+        SELECT seeker_id, COUNT(*) AS applied_count
+        FROM applications
+        GROUP BY seeker_id
+    ),
+    successful_applications AS (
+        SELECT seeker_id, COUNT(*) AS success_count
+        FROM applications
+        WHERE status = 'Accepted'
+        GROUP BY seeker_id
+    )
+    SELECT 
+        t.seeker_id,
+        t.applied_count,
+        s.success_count,
+        (s.success_count * 100.0 / t.applied_count) AS conversion_rate
+    FROM total_applications t
+    LEFT JOIN successful_applications s
+    ON t.seeker_id = s.seeker_id;
 
-
 This query calculates how many applications each seeker submitted, how many were successful, and their success rate. It provides actionable insights into candidate performance.
 
 4. Analytical Use Cases
