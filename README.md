@@ -74,5 +74,3 @@ This query calculates how many applications each seeker submitted, how many were
 - Trend Analysis: Using window functions to track application volume over time.
 - Filtering with Subqueries: Identifying companies with no applications.
 - Multi‑Step Logic with CTEs: Breaking down complex metrics like conversion rates or job fill times.
-
-professional?
