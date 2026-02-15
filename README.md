@@ -20,13 +20,14 @@ Example: Ranking job seekers by number of applications
 
 SELECT seeker_id,
 
-    COUNT(application_id) AS total_applications,    
+COUNT(application_id) AS total_applications,    
     
-    RANK() OVER (ORDER BY COUNT(application_id) DESC) AS rank_position  
+RANK() OVER (ORDER BY COUNT(application_id) DESC) AS rank_position  
     
 FROM applications
 
 GROUP BY seeker_id;
+
 
 This query counts applications per job seeker and assigns a rank based on activity. It helps identify the most active candidates.
 
@@ -40,16 +41,15 @@ FROM job_seekers
 
 WHERE seeker_id IN (
 
-    SELECT seeker_id
+SELECT seeker_id
     
-    FROM applications a
+FROM applications a
     
-    JOIN jobs j ON a.job_id = j.job_id
+JOIN jobs j ON a.job_id = j.job_id
     
-    JOIN companies c ON j.company_id = c.company_id
+JOIN companies c ON j.company_id = c.company_id
     
-    WHERE c.industry = 'IT'
-);
+WHERE c.industry = 'IT');
 
 
 Here, the inner query identifies seekers who applied to IT jobs, and the outer query retrieves their details.
