@@ -17,8 +17,7 @@ The Data Analysis task focuses on writing complex SQL queries to extract deeper 
 Window functions enable calculations across sets of rows related to the current row, without collapsing results into a single aggregate. They are particularly useful for ranking, running totals, and moving averages.
 Example: Ranking job seekers by number of applications
 
-
-    SELECT seeker_id,
+SELECT seeker_id,
 
     COUNT(application_id) AS total_applications,    
     
