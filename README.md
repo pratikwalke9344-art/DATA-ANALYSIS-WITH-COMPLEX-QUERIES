@@ -16,12 +16,19 @@ The Data Analysis task focuses on writing complex SQL queries to extract deeper 
 1. Window Functions
 Window functions enable calculations across sets of rows related to the current row, without collapsing results into a single aggregate. They are particularly useful for ranking, running totals, and moving averages.
 Example: Ranking job seekers by number of applications
+
 SELECT 
+
     seeker_id,
+    
     COUNT(application_id) AS total_applications,
+    
     RANK() OVER (ORDER BY COUNT(application_id) DESC) AS rank_position
+    
 FROM applications
+
 GROUP BY seeker_id;
+
 
 
 This query counts applications per job seeker and assigns a rank based on activity. It helps identify the most active candidates.
@@ -31,12 +38,19 @@ Subqueries allow us to nest queries inside others, enabling filtering or calcula
 Example: Find job seekers who applied to jobs in the “IT” industry
 
 SELECT name, email
+
 FROM job_seekers
+
 WHERE seeker_id IN (
+
     SELECT seeker_id
+    
     FROM applications a
+    
     JOIN jobs j ON a.job_id = j.job_id
+    
     JOIN companies c ON j.company_id = c.company_id
+    
     WHERE c.industry = 'IT'
 );
 
