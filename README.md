@@ -18,16 +18,16 @@ Window functions enable calculations across sets of rows related to the current 
 Example: Ranking job seekers by number of applications
 
 
-SELECT 
-    seeker_id,
+SELECT seeker_id,
+
     COUNT(application_id) AS total_applications,    
+    
     RANK() OVER (ORDER BY COUNT(application_id) DESC) AS rank_position  
+    
 FROM applications
+
 GROUP BY seeker_id;
 
-
-
-
 This query counts applications per job seeker and assigns a rank based on activity. It helps identify the most active candidates.
 
 2. Subqueries
