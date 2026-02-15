@@ -18,7 +18,6 @@ Window functions enable calculations across sets of rows related to the current 
 Example: Ranking job seekers by number of applications
 
 SELECT 
-
     seeker_id,
     
     COUNT(application_id) AS total_applications,
